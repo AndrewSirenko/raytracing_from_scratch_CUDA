@@ -6,17 +6,18 @@
 
 class sphere : public hittable {
     public:
+        sphere() {}
+        sphere(point3 cen, double r) : center(cen), radius(r) {};
+
+        virtual bool hit(
+            const ray& r, double t_min, double t_max, hit_record& rec) const override;
+
+    public:
         point3 center;
         double radius;
-    
-    public:
-        sphere() : {}
-        sphere(point3 cen, double r): center(cen), radius(r) {};
+};
 
-        virtual bool hit(const ray& r, double t_min, double t_max, hit_record& rec) const override;
-}
-
-bool sphere::hit (const ray& r, double t_min, double t_max, hit_record& rec) {
+bool sphere::hit(const ray& r, double t_min, double t_max, hit_record& rec) const {
     // Equation of the sphere in vector form is: (𝐏−𝐂)⋅(𝐏−𝐂)=𝑟^2; P(t) = A + tb
     // Eqn to check if ray hits sphere: 𝑡^2𝐛⋅𝐛+2𝑡𝐛⋅(𝐀−𝐂)+(𝐀−𝐂)⋅(𝐀−𝐂)−𝑟^2=0 
     // Can use quadratic eqn, check for location of intersections
@@ -40,7 +41,8 @@ bool sphere::hit (const ray& r, double t_min, double t_max, hit_record& rec) {
     // Store useful info in hit_record
     rec.t = root;
     rec.p = r.at(rec.t);
-    rec.normal = (rec.p - center) / radius;
+    vec3 outward_normal = (rec.p - center) / radius;
+    rec.set_face_normal(r, outward_normal);
 
     return true;
 }
