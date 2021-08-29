@@ -4,12 +4,12 @@ CXX = g++
 CFLAGS   = -g -Wall
 CXXFLAGS = -g -Wall -std=c++14 -fno-elide-constructors
 
-executables = helloppm
+executables = main
 
 .PHONY: default
 default: $(executables)
 
-helloppm: helloppm.o
+main: main.o 
 
 
 .PHONY: clean
