@@ -6,20 +6,20 @@
 
 double hit_sphere(const point3& center, double radius, const ray& r){
     // Equation of the sphere in vector form is: (𝐏−𝐂)⋅(𝐏−𝐂)=𝑟^2; P(t) = A + tb
-    // Eqn to check if ray hits sphere: 𝑡^2𝐛⋅𝐛+2𝑡𝐛⋅(𝐀−𝐂)+(𝐀−𝐂)⋅(𝐀−𝐂)−𝑟^2=0
-    // Find discriminant, check for 0,1,2 for amt of intersections
+    // Eqn to check if ray hits sphere: 𝑡^2𝐛⋅𝐛+2𝑡𝐛⋅(𝐀−𝐂)+(𝐀−𝐂)⋅(𝐀−𝐂)−𝑟^2=0 
+    // Can use quadratic eqn, check for location of intersections
     vec3 oc = r.origin() - center;
-    auto a = dot(r.direction(), r.direction());
-    auto b = 2.0 * dot(oc, r.direction());
-    auto c = dot(oc, oc) - radius*radius;
-    auto discriminant = b*b - 4*a*c;
+    auto a = r.direction().length_squared(); // v • v = |v|^2
+    auto half_b = dot(oc, r.direction());
+    auto c = oc.length_squared() - radius*radius;
+    auto discriminant = half_b*half_b - a*c;
     if (discriminant < 0){
         return -1.0;
     } 
 
     else {
         // Rest of quadratic eqn
-        return (-b - sqrt(discriminant)) / (2.0*a);
+        return (-half_b - sqrt(discriminant)) / (a);
     }
 }
 
