@@ -33,7 +33,7 @@ color ray_color_rainbow(const ray& r, const hittable& world, int depth){
     }
     vec3 unit_direction = unit_vector(r.direction());
     auto t = 0.5*(unit_direction.y() + 1.0);
-    return (1.0-t)*color(1.0, 1.0, 1.0) + t*color(0.5, 0.7, 1.0);
+    return (1.0-t)*color(1.0, 1.0, 1.0) + t*color(0.95, 0.68, 0.84);
 }
 
 color ray_color(const ray& r, const hittable& world, int depth) {
@@ -43,7 +43,7 @@ color ray_color(const ray& r, const hittable& world, int depth) {
     if (depth <= 0)
         return color(0,0,0);
 
-    if (world.hit(r, 0, infinity, rec)) {
+    if (world.hit(r, 0.001, infinity, rec)) {
         point3 target = rec.p + rec.normal + random_in_unit_sphere();
         return 0.5 * ray_color(ray(rec.p, target - rec.p), world, depth-1);
     }
@@ -51,7 +51,7 @@ color ray_color(const ray& r, const hittable& world, int depth) {
     vec3 unit_direction = unit_vector(r.direction());
     auto t = 0.5*(unit_direction.y() + 1.0);
     // Linear interpolation: blendedValue=(1−𝑡)⋅startValue+𝑡⋅endValue,
-    return (1.0-t)*color(1.0, 1.0, 1.0) + t*color(0.5, 0.7, 1.0);
+    return (1.0-t)*color(1.0, 1.0, 1.0) + t*color(0.95, 0.68, 0.84);
 }
 
 int main() {
@@ -67,7 +67,7 @@ int main() {
     // World
     hittable_list world;
     world.add(make_shared<sphere>(point3(0,0,-1), 0.5));
-    world.add(make_shared<sphere>(point3(0,-100.5,-1), 100)); // sphereical ground
+    world.add(make_shared<sphere>(point3(0,-100.5,-1), 100)); // spherical ground
 
     // Camera
 
